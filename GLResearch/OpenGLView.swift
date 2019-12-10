@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import OpenGLES
 import GLKit
+import CoreGraphics
 
 final class OpenGLView: UIView {
     
@@ -32,6 +33,9 @@ final class OpenGLView: UIView {
     private var glLayer: CAEAGLLayer!
     private var displayLink: CADisplayLink!
     private var textureInfo: GLKTextureInfo!
+    
+    private var screenFrameBuffer: GLuint = 0
+    private var screenColorRendererBuffer: GLuint = 0
     
     private var vertices: [Vertex] = [
         Vertex(position: Position(x: -1, y: -1, z: 1), color: Color(r: 1, g: 0, b: 0, a: 1), textCoord: TextCoord(u: 0, v: 0)),
@@ -62,7 +66,7 @@ final class OpenGLView: UIView {
         initShader()
         initVertexData()
         initFrameBuffer()
-        uploadTexture()
+//        uploadTexture()
         setupRunLoop()
     }
     
@@ -85,31 +89,59 @@ final class OpenGLView: UIView {
         
         let size = UIScreen.main.bounds.size
          
-        glGenRenderbuffers(1, &colorRendererBuffer)
-        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), colorRendererBuffer)
-        self.context.renderbufferStorage(Int(GL_RENDERBUFFER), from: self.glLayer)
-        
-//        glEnable(GLenum(GL_TEXTURE_2D))
-//        glGenTextures(1, &texture)
-//        glBindTexture(GLenum(GL_TEXTURE_2D), texture)
-//        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA8, GLsizei(size.width), GLsizei(size.height), 0, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), nil)
-//        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
-//        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
         
         glGenFramebuffers(1, &frameBuffer)
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), frameBuffer)
+
+        glGenRenderbuffers(1, &colorRendererBuffer)
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), colorRendererBuffer)
         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0),GLenum(GL_RENDERBUFFER), colorRendererBuffer)
+        glRenderbufferStorage(GLenum(GL_RENDERBUFFER), GLenum(GL_RGBA8), GLsizei(size.width), GLsizei(size.height))
         
-//        glFramebufferTexture2D(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT1), GLenum(GL_TEXTURE_2D), texture, 0)
+//        self.context.renderbufferStorage(Int(GL_RENDERBUFFER), from: self.glLayer)
+        
+      
+        glGenTextures(1, &texture)
+        glBindTexture(GLenum(GL_TEXTURE_2D), texture)
+        glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(size.width), GLsizei(size.height), 0, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), nil)
+        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
+        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
+        glFramebufferTexture2D(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_TEXTURE_2D), texture, 0)
     
-        if glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER)) == GLenum(GL_FRAMEBUFFER_COMPLETE) {
+        
+        let frameBufferStatus = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
+
+        print(frameBufferStatus)
+        
+        if frameBufferStatus == GLenum(GL_FRAMEBUFFER_COMPLETE) {
             print("Init Frame buffer success")
         } else {
             print("Init FrameBuffer failed")
             glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
         }
         
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+
+        glGenFramebuffers(1, &screenFrameBuffer)
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), screenFrameBuffer)
+
+        glGenRenderbuffers(1, &screenColorRendererBuffer)
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), screenColorRendererBuffer)
+        glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_RENDERBUFFER), screenColorRendererBuffer)
+        self.context.renderbufferStorage(Int(GLenum(GL_RENDERBUFFER)), from: self.glLayer)
+
+        let screenframeBufferStatus = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
+        if screenframeBufferStatus == GLenum(GL_FRAMEBUFFER_COMPLETE) {
+            print("Init Screen Frame buffer success")
+        } else {
+            print("Init Screen FrameBuffer failed")
+            glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+        }
+        
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+        
         glViewport(0, 0, GLint(size.width), GLint(size.height))
+        
     }
     
     private func initVertexData() {
@@ -134,13 +166,13 @@ final class OpenGLView: UIView {
         glVertexAttribPointer(texCoordSlot, 2, GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<Vertex>.size), UnsafePointer(bitPattern: MemoryLayout<GLfloat>.size * 7))
         glDisableVertexAttribArray(texCoordSlot)
         
-        glActiveTexture(GLenum(GL_TEXTURE0));
-        glUniform1i(GLint(sampleSlot), 0);
-        
         glGenBuffers(1, &indexVertexBuffer)
         glBindBuffer(GLenum(GL_ELEMENT_ARRAY_BUFFER), indexVertexBuffer)
         glBufferData(GLenum(GL_ELEMENT_ARRAY_BUFFER), indices.count * MemoryLayout<GLubyte>.size, indices, GLenum(GL_STATIC_DRAW))
         
+        glActiveTexture(GLenum(GL_TEXTURE4))
+        
+        glBindVertexArray(0)
     }
 
     private func initShader() {
@@ -148,13 +180,19 @@ final class OpenGLView: UIView {
         postitionSlot = GLuint(glGetAttribLocation(shaderProgram.program, "aPosition"))
         colorSlot = GLuint(glGetAttribLocation(shaderProgram.program, "aColor"))
         texCoordSlot = GLuint(glGetAttribLocation(shaderProgram.program, "aTexCoord"))
-        sampleSlot = GLuint(glGetUniformLocation(shaderProgram.program, "sTexture"))
+//         sampleSlot = GLuint(glGetUniformLocation(shaderProgram.program, "sTexture"))
     }
     
     private func uploadTexture() {
         
         guard let textureFileUrl = Bundle.main.url(forResource: "texture", withExtension: "jpg") else { return }
-        textureInfo = try! GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false])
+        
+        glEnable(GLenum(GL_TEXTURE_2D))
+        glActiveTexture(GLenum(GL_TEXTURE0))
+        glUniform1i(GLint(sampleSlot), 0)
+
+
+//        textureInfo = try! GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false])
         
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
@@ -170,22 +208,38 @@ final class OpenGLView: UIView {
         
         shaderProgram.use()
         
+       
+        
         glClearColor(0, 0, 1, 1)
         glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
         
+        
+        
+        glBindVertexArray(vao)
         glEnableVertexAttribArray(postitionSlot)
         glEnableVertexAttribArray(colorSlot)
         glEnableVertexAttribArray(texCoordSlot)
         
+        
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), frameBuffer)
+        glDrawElements(GLenum(GL_TRIANGLES), GLsizei(indices.count), GLenum(GL_UNSIGNED_BYTE), nil)
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+        
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), screenFrameBuffer)
         glDrawElements(GLenum(GL_TRIANGLES), GLsizei(indices.count), GLenum(GL_UNSIGNED_BYTE), nil)
         
         context.presentRenderbuffer(Int(GL_RENDERBUFFER))
         
+        glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+        
+        glBindVertexArray(0)
         glDisableVertexAttribArray(postitionSlot)
         glDisableVertexAttribArray(colorSlot)
         glDisableVertexAttribArray(texCoordSlot)
-    
         
+        
+        
+
     }
 }
 

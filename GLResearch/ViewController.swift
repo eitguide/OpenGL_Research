@@ -13,7 +13,6 @@ final class ViewController: UIViewController {
 
     private let openGLView = OpenGLView(frame: UIScreen.main.bounds)
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
