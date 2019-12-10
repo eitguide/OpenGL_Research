@@ -19,7 +19,7 @@ final class OpenGLView: UIView {
     
     private var frameBuffer: GLuint! = 0
     private var colorRendererBuffer: GLuint! = 0
-    private var texture: GLuint! = 0
+    private var renderTexture: GLuint! = 0
     private var indexVertexBuffer: GLuint! = 0
     private var vertexBuffer: GLuint! = 0
     private var vao: GLuint! = 0
@@ -66,7 +66,7 @@ final class OpenGLView: UIView {
         initShader()
         initVertexData()
         initFrameBuffer()
-//        uploadTexture()
+        uploadTexture()
         setupRunLoop()
     }
     
@@ -98,16 +98,13 @@ final class OpenGLView: UIView {
         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0),GLenum(GL_RENDERBUFFER), colorRendererBuffer)
         glRenderbufferStorage(GLenum(GL_RENDERBUFFER), GLenum(GL_RGBA8), GLsizei(size.width), GLsizei(size.height))
         
-//        self.context.renderbufferStorage(Int(GL_RENDERBUFFER), from: self.glLayer)
-        
-      
-        glGenTextures(1, &texture)
-        glBindTexture(GLenum(GL_TEXTURE_2D), texture)
+        glGenTextures(1, &renderTexture)
+        glBindTexture(GLenum(GL_TEXTURE_2D), renderTexture)
         glTexImage2D(GLenum(GL_TEXTURE_2D), 0, GL_RGBA, GLsizei(size.width), GLsizei(size.height), 0, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), nil)
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
-        glFramebufferTexture2D(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_TEXTURE_2D), texture, 0)
-    
+        glFramebufferTexture2D(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_TEXTURE_2D), renderTexture, 0)
+        
         
         let frameBufferStatus = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
 
@@ -149,6 +146,7 @@ final class OpenGLView: UIView {
         glGenVertexArrays(1, &vao)
         glBindVertexArray(vao)
         
+        //All following command will be effect to vao
         glGenBuffers(1, &vertexBuffer)
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), vertexBuffer)
         glBufferData(GLenum(GL_ARRAY_BUFFER), 4 * MemoryLayout<Vertex>.size, vertices, GLenum(GL_STATIC_DRAW))
@@ -187,18 +185,17 @@ final class OpenGLView: UIView {
         
         guard let textureFileUrl = Bundle.main.url(forResource: "texture", withExtension: "jpg") else { return }
         
-        glEnable(GLenum(GL_TEXTURE_2D))
-        glActiveTexture(GLenum(GL_TEXTURE0))
-        glUniform1i(GLint(sampleSlot), 0)
+//        glEnable(GLenum(GL_TEXTURE_2D))
+        glActiveTexture(GLenum(GL_TEXTURE1))
+//        glUniform1i(GLint(sampleSlot), 0)
 
-
-//        textureInfo = try! GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false])
+        textureInfo = try! GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false])
         
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
         
-//        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_REPEAT)
-//        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_REPEAT)
+        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_REPEAT)
+        glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_REPEAT)
         
     }
     

@@ -83,4 +83,9 @@ final class Shader {
         return shader
         
     }
+    
+    func clean() {
+        glDeleteProgram(program)
+    
+    }
 }
