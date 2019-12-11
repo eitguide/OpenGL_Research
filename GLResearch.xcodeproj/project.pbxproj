@@ -19,6 +19,11 @@
 		8A220D4E239E2896008353E8 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D4D239E2896008353E8 /* Vertex.swift */; };
 		8A220D50239E43D3008353E8 /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D4F239E43D2008353E8 /* texture.jpg */; };
 		8A220D52239E461F008353E8 /* code.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D51239E461E008353E8 /* code.png */; };
+		8A220D55239F8ECA008353E8 /* FrameBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D54239F8ECA008353E8 /* FrameBuffer.swift */; };
+		8A220D57239F9116008353E8 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D56239F9116008353E8 /* Texture.swift */; };
+		8A220D5C239FA0A3008353E8 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D5B239FA0A3008353E8 /* Renderer.swift */; };
+		8A220D5E23A0B76E008353E8 /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */; };
+		8A220D6223A0EF0F008353E8 /* wall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D6123A0EF0F008353E8 /* wall.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +41,11 @@
 		8A220D4D239E2896008353E8 /* Vertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		8A220D4F239E43D2008353E8 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
 		8A220D51239E461E008353E8 /* code.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = code.png; sourceTree = "<group>"; };
+		8A220D54239F8ECA008353E8 /* FrameBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameBuffer.swift; sourceTree = "<group>"; };
+		8A220D56239F9116008353E8 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
+		8A220D5B239FA0A3008353E8 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexBuffer.swift; sourceTree = "<group>"; };
+		8A220D6123A0EF0F008353E8 /* wall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wall.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,9 +78,8 @@
 		8A220D30239E012D008353E8 /* GLResearch */ = {
 			isa = PBXGroup;
 			children = (
+				8A220D5A239F91BE008353E8 /* Core */,
 				8A220D53239E9366008353E8 /* Resources */,
-				8A220D4F239E43D2008353E8 /* texture.jpg */,
-				8A220D51239E461E008353E8 /* code.png */,
 				8A220D31239E012D008353E8 /* AppDelegate.swift */,
 				8A220D35239E012D008353E8 /* ViewController.swift */,
 				8A220D37239E012D008353E8 /* Main.storyboard */,
@@ -78,8 +87,6 @@
 				8A220D3C239E012E008353E8 /* LaunchScreen.storyboard */,
 				8A220D3F239E012E008353E8 /* Info.plist */,
 				8A220D45239E019E008353E8 /* OpenGLView.swift */,
-				8A220D47239E024B008353E8 /* Shader.swift */,
-				8A220D4D239E2896008353E8 /* Vertex.swift */,
 			);
 			path = GLResearch;
 			sourceTree = "<group>";
@@ -87,10 +94,42 @@
 		8A220D53239E9366008353E8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8A220D59239F91AC008353E8 /* Texture */,
+				8A220D58239F9191008353E8 /* ShaderSource */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8A220D58239F9191008353E8 /* ShaderSource */ = {
+			isa = PBXGroup;
+			children = (
 				8A220D49239E1347008353E8 /* vertextShader.vsh */,
 				8A220D4B239E13AA008353E8 /* fragmentShader.fsh */,
 			);
-			path = Resources;
+			path = ShaderSource;
+			sourceTree = "<group>";
+		};
+		8A220D59239F91AC008353E8 /* Texture */ = {
+			isa = PBXGroup;
+			children = (
+				8A220D4F239E43D2008353E8 /* texture.jpg */,
+				8A220D51239E461E008353E8 /* code.png */,
+				8A220D6123A0EF0F008353E8 /* wall.jpg */,
+			);
+			path = Texture;
+			sourceTree = "<group>";
+		};
+		8A220D5A239F91BE008353E8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				8A220D4D239E2896008353E8 /* Vertex.swift */,
+				8A220D54239F8ECA008353E8 /* FrameBuffer.swift */,
+				8A220D56239F9116008353E8 /* Texture.swift */,
+				8A220D47239E024B008353E8 /* Shader.swift */,
+				8A220D5B239FA0A3008353E8 /* Renderer.swift */,
+				8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,6 +197,7 @@
 				8A220D50239E43D3008353E8 /* texture.jpg in Resources */,
 				8A220D3B239E012E008353E8 /* Assets.xcassets in Resources */,
 				8A220D39239E012D008353E8 /* Main.storyboard in Resources */,
+				8A220D6223A0EF0F008353E8 /* wall.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,7 +208,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A220D5C239FA0A3008353E8 /* Renderer.swift in Sources */,
+				8A220D5E23A0B76E008353E8 /* VertexBuffer.swift in Sources */,
 				8A220D36239E012D008353E8 /* ViewController.swift in Sources */,
+				8A220D55239F8ECA008353E8 /* FrameBuffer.swift in Sources */,
+				8A220D57239F9116008353E8 /* Texture.swift in Sources */,
 				8A220D46239E019E008353E8 /* OpenGLView.swift in Sources */,
 				8A220D48239E024B008353E8 /* Shader.swift in Sources */,
 				8A220D4E239E2896008353E8 /* Vertex.swift in Sources */,

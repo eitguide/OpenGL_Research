@@ -11,14 +11,14 @@ import OpenGLES
 
 final class Shader {
     
-    private var shaderProgram: GLuint = 0
+    private var program: GLuint = 0
     
-    var program: GLuint {
-        return shaderProgram
-    }
+    var attributeLocationDic = [String: GLint]()
+    var uniformLocationDic = [String: GLint]()
     
+
     init(vertexShaderString: String, fragmentShaderString: String) {
-         _ = createProgramWith(vertexShaderString: vertexShaderString, fragmentShaderString: fragmentShaderString)
+         createShaderWith(vertexShaderString: vertexShaderString, fragmentShaderString: fragmentShaderString)
     }
     
     init(vertexShaderFile: String, fragmentShaderFile: String) {
@@ -28,27 +28,42 @@ final class Shader {
         let vertexShaderString = try! String(contentsOf: URL(fileURLWithPath: vertexSourcePath))
         let fragmentShaderString = try! String(contentsOf: URL(fileURLWithPath: fragmentSourcePath))
         
-        _ = createProgramWith(vertexShaderString: vertexShaderString, fragmentShaderString: fragmentShaderString)
+        createShaderWith(vertexShaderString: vertexShaderString, fragmentShaderString: fragmentShaderString)
     }
     
-    private func createProgramWith(vertexShaderString: String, fragmentShaderString: String) -> GLuint {
+    private func createShaderWith(vertexShaderString: String, fragmentShaderString: String) {
         let vertextShader = createShader(shaderType: GLenum(GL_VERTEX_SHADER), shaderSource: vertexShaderString)
         let fragmentShader = createShader(shaderType: GLenum(GL_FRAGMENT_SHADER), shaderSource: fragmentShaderString)
         
-        shaderProgram = glCreateProgram()
-        glAttachShader(shaderProgram, GLuint(vertextShader))
-        glAttachShader(shaderProgram, GLuint(fragmentShader))
-        glLinkProgram(shaderProgram)
+        program = glCreateProgram()
+        glAttachShader(program, GLuint(vertextShader))
+        glAttachShader(program, GLuint(fragmentShader))
+        glLinkProgram(program)
         
-        glValidateProgram(shaderProgram)
-        glUseProgram(shaderProgram)
+        glValidateProgram(program)
+      
         
-        return shaderProgram
     }
     
-    
     func use() {
-        glUseProgram(shaderProgram)
+        glUseProgram(program)
+    
+    }
+    
+    func addAttribute(name: String) {
+        if name.isEmpty {
+            return
+        }
+        
+        let attributeLocation = glGetAttribLocation(program, name)
+        attributeLocationDic[name] = attributeLocation
+    }
+    
+    func addUniform(name: String) {
+        if name.isEmpty { return }
+        
+        let uniformLocation = glGetUniformLocation(program, name)
+        uniformLocationDic[name] = uniformLocation
     }
     
     private func createShader(shaderType: GLenum, shaderSource: String) -> GLint {
@@ -86,6 +101,21 @@ final class Shader {
     
     func clean() {
         glDeleteProgram(program)
-    
     }
+    
+    func setUniform1i(name: String, value: GLint) {
+        let uniformLocation = glGetUniformLocation(program, name)
+        if uniformLocation != -1 {
+            glUniform1i(uniformLocation, value)
+        }
+    }
+    
+    func attributeLocationBy(name: String) -> GLint {
+        return attributeLocationDic[name] ?? 0
+    }
+    
+    func uniformLocationBy(name: String) -> GLint {
+        return uniformLocationDic[name] ?? 0
+    }
+        
 }

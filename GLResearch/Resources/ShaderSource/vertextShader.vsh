@@ -8,7 +8,7 @@ varying vec4 vColor;
 varying vec2 vTexCoord;
 
 void main() {
-    gl_Position = vec4(aPosition, 1.0);
+    gl_Position = vec4(aPosition / 1.5, 1.0);
     vColor = aColor;
     vTexCoord = aTexCoord;
 }
