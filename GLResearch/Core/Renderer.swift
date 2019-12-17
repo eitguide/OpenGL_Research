@@ -17,14 +17,13 @@ protocol IRenderer {
 
 final class Renderer: IRenderer {
     
-    var clearColor: Color = Color(r: 1, g: 0, b: 0, a: 1)
-    
     let shader: Shader
     let vertexBuffer: VertexBuffer
     
     init(shader: Shader, vertexBuffer: VertexBuffer) {
         self.shader = shader
         self.vertexBuffer = vertexBuffer
+        glClearColor(1.0, 0.0, 1.0, 1.0)
     }
     
     func prepare() {
@@ -32,8 +31,7 @@ final class Renderer: IRenderer {
     }
     
     func clear() {
-        glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a)
-        glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
+        glClear(GLbitfield(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT))
     }
     
     func draw() {

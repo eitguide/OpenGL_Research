@@ -8,43 +8,48 @@
 
 import Foundation
 import OpenGLES
+import GLKit
 
 final class VertexBuffer {
-    private var vertexData = [Vertex]()
+    private var vertexData = [GLfloat]()
     private var indiceData = [GLubyte]()
     
     private var vao: GLuint = 0
     private var vertexBuffer: GLuint = 0
     private var indiceBuffer: GLuint = 0
+    private let numberElementPerVertext: Int
+    
+    private var currentIndex: Int = 0
+    
     
     var indiceCount: Int {
         return indiceData.count
     }
     
-    init(vertexData: [Vertex], indiceData: [GLubyte]) {
+    init(vertexData: [GLfloat], indiceData: [GLubyte], numberElementPerVertext: Int) {
         self.vertexData.append(contentsOf: vertexData)
         self.indiceData.append(contentsOf: indiceData)
+        self.numberElementPerVertext = numberElementPerVertext
     }
     
-    func configVertexBufferAndUploadToGPU(positionIndex: GLuint, colorIndex: GLuint, texCoordIndex: GLuint) {
+    func genVertextBuffer() {
         
         glGenVertexArrays(1, &vao)
         glBindVertexArray(vao)
         
         glGenBuffers(1, &vertexBuffer)
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), vertexBuffer)
-        glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<Vertex>.size * vertexData.count, vertexData, GLenum(GL_STATIC_DRAW))
+        glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLfloat>.size * vertexData.count, vertexData, GLenum(GL_STATIC_DRAW))
+    }
+    
+    func addConfigVertexBuffer(forIndex: GLuint, numberOfComponent: GLuint) {
+        glEnableVertexAttribArray(forIndex)
+        glVertexAttribPointer(forIndex, GLint(numberOfComponent), GLenum(GL_FLOAT), GLboolean(GL_FALSE),  GLsizei(MemoryLayout<GLfloat>.size * numberElementPerVertext), UnsafePointer(bitPattern: MemoryLayout<GLfloat>.size * currentIndex))
         
-        glEnableVertexAttribArray(positionIndex)
-        glVertexAttribPointer(positionIndex, 3, GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<Vertex>.size), nil)
-        
-        glEnableVertexAttribArray(colorIndex)
-        glVertexAttribPointer(colorIndex, 4, GLenum(GL_FLOAT), GLboolean(GL_FALSE),
-                              GLsizei(MemoryLayout<Vertex>.size), UnsafePointer(bitPattern: MemoryLayout<GLfloat>.size * 3))
-      
-        glEnableVertexAttribArray(texCoordIndex)
-        glVertexAttribPointer(texCoordIndex, 2, GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<Vertex>.size), UnsafePointer(bitPattern: MemoryLayout<GLfloat>.size * 7))
-
+        currentIndex += Int(numberOfComponent)
+    }
+    
+    func genElementBuffer() {
         glGenBuffers(1, &indiceBuffer)
         glBindBuffer(GLenum(GL_ELEMENT_ARRAY_BUFFER), indiceBuffer)
         glBufferData(GLenum(GL_ELEMENT_ARRAY_BUFFER), MemoryLayout<GLubyte>.size * indiceData.count, indiceData, GLenum(GL_STATIC_DRAW))
@@ -67,4 +72,6 @@ final class VertexBuffer {
         glDeleteBuffers(1, &indiceBuffer)
         
     }
+    
+    
 }

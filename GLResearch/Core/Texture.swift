@@ -14,6 +14,8 @@ import GLKit
 final class Texture {
     
     private let fileName: String
+    private let fileType: String
+    
     private var textureInfo: GLKTextureInfo?
     
     private var name: GLuint {
@@ -28,17 +30,17 @@ final class Texture {
         return textureInfo!.target
     }
 
-    init(fileName: String) {
-        self.fileName = fileName
+    init(name: String, type: String) {
+        self.fileName = name
+        self.fileType = type
     }
     
     func uploadTextureToGPU() -> Bool {
         
-        guard let textureFileUrl = Bundle.main.url(forResource: fileName, withExtension: nil) else { return false }
+         let textureFileUrl = Bundle.main.url(forResource: self.fileName, withExtension: self.fileType)!
         
-        guard let textureInfo = try? GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false]) else {
-            return false
-        }
+        let textureInfo = try! GLKTextureLoader.texture(withContentsOf: textureFileUrl, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderApplyPremultiplication: false])
+        
         
         self.textureInfo = textureInfo
         
@@ -46,7 +48,7 @@ final class Texture {
         
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MIN_FILTER), GL_LINEAR)
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_MAG_FILTER), GL_LINEAR)
-        
+                
         glBindTexture(GLenum(GL_TEXTURE_2D), 0)
         
         return true
@@ -58,7 +60,7 @@ final class Texture {
     }
     
     func unbind() {
-        glBindTexture(target, 0)
+        glBindTexture(GLenum(GL_TEXTURE_2D), 0)
     }
     
     func release() {

@@ -12,6 +12,7 @@ import OpenGLES
 import GLKit
 import CoreGraphics
 
+
 final class OpenGLView: UIView {
 
     private var glLayer: CAEAGLLayer!
@@ -25,14 +26,14 @@ final class OpenGLView: UIView {
     private var renderToTextureFrameBuffer: FrameBuffer!
     private var viewFrameBuffer: FrameBuffer!
     private var renderer: Renderer!
-    private let profileTexture = Texture(fileName: "wall.jpg")
+    private let profileTexture = Texture(name: "texture", type: "jpg")
+    private let flowerTexture = Texture(name: "tree", type: "png")
     
-    
-    private var vertices: [Vertex] = [
-        Vertex(position: Position(x: -1, y: -1, z: 0.5), color: Color(r: 1, g: 0, b: 0, a: 1), textCoord: TextCoord(u: 0, v: 0)),
-        Vertex(position: Position(x: 1, y: -1, z: 0.5), color: Color(r: 0, g: 1, b: 0, a: 1), textCoord: TextCoord(u: 1, v: 0)),
-        Vertex(position: Position(x: 1, y: 1, z: 1), color: Color(r: 0, g: 0, b: 1, a: 1), textCoord: TextCoord(u: 1, v: 1)),
-        Vertex(position: Position(x: -1, y: 1, z: 1), color: Color(r: 0, g: 0, b: 0.5, a: 1), textCoord: TextCoord(u: 0, v: 1))
+    private var vertices: [GLfloat] = [
+        -0.5, -0.5, 1.0,          1.0, 0.0, 0.0, 1.0,            0.0, 0.0,
+        0.5, -0.5, 1.0,           0.0, 1.0, 0.0, 1.0,            1.0, 0.0,
+        0.5, 0.5, -1.0,           0.0, 0.0, 1.0, 1.0,            1.0, 1.0,
+        -0.5, 0.5, -1.0,          0.0, 0.0, 0.5, 1.0,            0.0, 1.0
     ]
     
     private let indices: [GLubyte] = [0, 1, 2, 2, 3, 0]
@@ -61,6 +62,7 @@ final class OpenGLView: UIView {
     
     private func setupRunLoop() {
         displayLink = CADisplayLink(target: self, selector: #selector(render))
+        displayLink.preferredFramesPerSecond = 30
         displayLink.add(to: .current, forMode: .default)
     }
     
@@ -71,6 +73,7 @@ final class OpenGLView: UIView {
         
         self.glLayer = self.layer as? CAEAGLLayer
         self.glLayer.isOpaque = true
+        self.glLayer.drawableProperties = [kEAGLDrawablePropertyRetainedBacking: true, kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8]
     }
     
     private func initShader() {
@@ -81,24 +84,26 @@ final class OpenGLView: UIView {
         shader.addAttribute(name: "aColor")
         shader.addAttribute(name: "aTexCoord")
         
-        shader.addUniform(name: "sTexture")
+        shader.addUniform(name: "sTexture1")
+        shader.addUniform(name: "sTexture2")
+        shader.addUniform(name: "uModelViewMatrix")
+        shader.addUniform(name: "uProjectionMatrix")
         
     }
     
     private func initVertexBufferAndFrameBuffer() {
         
-        vertexDataBuffer = VertexBuffer(vertexData: vertices, indiceData: indices)
+        vertexDataBuffer = VertexBuffer(vertexData: vertices, indiceData: indices, numberElementPerVertext: 9)
         vertexDataBuffer.bind()
         
-        vertexDataBuffer.configVertexBufferAndUploadToGPU(
-            positionIndex: GLuint(shader.attributeLocationBy(name: "aPosition")),
-            colorIndex: GLuint(shader.attributeLocationBy(name: "aColor")),
-            texCoordIndex: GLuint(shader.attributeLocationBy(name: "aTexCoord"))
-        )
+        vertexDataBuffer.genVertextBuffer()
+        vertexDataBuffer.addConfigVertexBuffer(forIndex: GLuint(shader.attributeLocationBy(name: "aPosition")), numberOfComponent: 3)
+        vertexDataBuffer.addConfigVertexBuffer(forIndex: GLuint(shader.attributeLocationBy(name: "aColor")), numberOfComponent: 4)
+        vertexDataBuffer.addConfigVertexBuffer(forIndex: GLuint(shader.attributeLocationBy(name: "aTexCoord")), numberOfComponent: 2)
+        vertexDataBuffer.genElementBuffer()
         
         vertexDataBuffer.unbind()
         
-
         let size = UIScreen.main.bounds.size
         
         offscreenFrameBuffer = FrameBuffer(width: size.width, height: size.height)
@@ -106,7 +111,7 @@ final class OpenGLView: UIView {
         offscreenFrameBuffer.attachColorRenderer()
         offscreenFrameBuffer.validate()
         offscreenFrameBuffer.unbind()
-    
+
         renderToTextureFrameBuffer = FrameBuffer(width: size.width, height: size.height)
         renderToTextureFrameBuffer.bind()
         renderToTextureFrameBuffer.attachTextureRenderer()
@@ -121,42 +126,85 @@ final class OpenGLView: UIView {
         viewFrameBuffer.unbind()
         
         renderer = Renderer(shader: shader, vertexBuffer: vertexDataBuffer)
-        
-
     }
 
+    func modelMatrix() -> GLKMatrix4 {
+        var matrix = GLKMatrix4Identity
+//        matrix = GLKMatrix4Translate(matrix, Float(sin(CACurrentMediaTime() * 2 * Double.pi / 2)), 0, 0)
+        matrix = GLKMatrix4Translate(matrix, 0.5, 0, 0)
+        return matrix
+    }
+    
+    func viewMatrix() -> GLKMatrix4 {
+        return GLKMatrix4MakeTranslation(-0.5, -0.5, -1.1)
+    }
+    
+    func viewModelMatrix() -> GLKMatrix4 {
+        return GLKMatrix4Multiply(viewMatrix(), modelMatrix())
+    }
+    
+    func projectionMatrix() -> GLKMatrix4 {
+        return GLKMatrix4MakePerspective(GLKMathDegreesToRadians(90), GLfloat(self.bounds.size.width / self.bounds.size.height), 1, 150)
+    }
+    
     private func initTexture() {
+        
         profileTexture.activeTextureAt(slot: 6)
         if(profileTexture.uploadTextureToGPU() ) {
-            print("Upload local texture to GPU success")
+            print("Upload profile local texture to GPU success")
         } else {
-            print("Upload local texture to GPU failed")
+            print("Upload profile local texture to GPU failed")
         }
-        shader.setUniform1i(name: "sTexture", value: 6)
+        profileTexture.unbind()
+        
+        
+        flowerTexture.activeTextureAt(slot: 4)
+        if(flowerTexture.uploadTextureToGPU()) {
+            print("Upload flower local texture to GPU success")
+        } else {
+           print("Upload flower local texture to GPU failed")
+        }
+        flowerTexture.unbind()
+        
+        glEnable(GLenum(GL_BLEND))
+        glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA))
+    
+        
     }
     
     @objc func render() {
-        
-        renderer.prepare()
+        print(#function)
+        viewFrameBuffer.bind()
         renderer.clear()
         
+        renderer.prepare()
         vertexDataBuffer.bind()
-        profileTexture.bind()
         
         profileTexture.activeTextureAt(slot: 6)
-        shader.setUniform1i(name: "sTexture", value: 6)
+        profileTexture.bind()
+        
+        flowerTexture.activeTextureAt(slot: 4)
+        flowerTexture.bind()
         
         renderToTextureFrameBuffer.bind()
         renderer.draw()
         renderToTextureFrameBuffer.unbind()
+
+        glUniformMatrix4fv(shader.uniformLocationBy(name: "uModelViewMatrix"), 1, GLboolean(GLenum(GL_FALSE)), viewModelMatrix().array)
+        glUniformMatrix4fv(shader.uniformLocationBy(name: "uProjectionMatrix"), 1, GLboolean(GLenum(GL_FALSE)), projectionMatrix().array)
+        
+        shader.setUniform1i(name: "sTexture1", value: 6)
+        shader.setUniform1i(name: "sTexture2", value: 4)
         
         viewFrameBuffer.bind()
+    
         renderer.draw()
+        
         context.presentRenderbuffer(Int(GL_RENDERBUFFER))
         
         profileTexture.unbind()
-        viewFrameBuffer.unbind()
         vertexDataBuffer.unbind()
+        viewFrameBuffer.unbind()
         
     }
 }

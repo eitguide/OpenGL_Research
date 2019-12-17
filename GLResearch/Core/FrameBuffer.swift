@@ -73,6 +73,7 @@ final class FrameBuffer {
     
     func bind() {
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), frameBuffer)
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), colorRendererBuffer)
     }
     
     
