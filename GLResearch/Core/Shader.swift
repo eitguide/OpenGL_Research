@@ -16,7 +16,10 @@ final class Shader {
     var attributeLocationDic = [String: GLint]()
     var uniformLocationDic = [String: GLint]()
     
+    var vertexShaderId: GLint = 0
+    var fragmentShaderId: GLint = 0
 
+    
     init(vertexShaderString: String, fragmentShaderString: String) {
          createShaderWith(vertexShaderString: vertexShaderString, fragmentShaderString: fragmentShaderString)
     }
@@ -32,32 +35,40 @@ final class Shader {
     }
     
     private func createShaderWith(vertexShaderString: String, fragmentShaderString: String) {
-        let vertextShader = createShader(shaderType: GLenum(GL_VERTEX_SHADER), shaderSource: vertexShaderString)
-        let fragmentShader = createShader(shaderType: GLenum(GL_FRAGMENT_SHADER), shaderSource: fragmentShaderString)
+        vertexShaderId = createShader(shaderType: GLenum(GL_VERTEX_SHADER), shaderSource: vertexShaderString)
+        fragmentShaderId = createShader(shaderType: GLenum(GL_FRAGMENT_SHADER), shaderSource: fragmentShaderString)
         
         program = glCreateProgram()
-        glAttachShader(program, GLuint(vertextShader))
-        glAttachShader(program, GLuint(fragmentShader))
+        glAttachShader(program, GLuint(vertexShaderId))
+        glAttachShader(program, GLuint(fragmentShaderId))
+        link()
+    }
+    
+    private func link() {
         glLinkProgram(program)
         
-        glValidateProgram(program)
-      
-        
+        var linkStatus: GLint = 0
+        glGetProgramiv(program, GLenum(GL_LINK_STATUS), &linkStatus)
+        if linkStatus == 0 {
+            var logLenght: GLint = 0
+            glGetProgramiv(program, GLenum(GL_INFO_LOG_LENGTH), &logLenght)
+            if logLenght > 0 {
+                var compileLog = [CChar](repeating: 0, count: Int(logLenght))
+                glGetProgramInfoLog(program, logLenght, &logLenght, &compileLog)
+                print("Link log: \(String(cString:compileLog))")
+            } else {
+                print("Link Error")
+            }
+        } else {
+            glValidateProgram(program)
+        }
     }
     
     func use() {
         glUseProgram(program)
     
     }
-    
-    func addAttribute(name: String) {
-        if name.isEmpty {
-            return
-        }
-        
-        let attributeLocation = glGetAttribLocation(program, name)
-        attributeLocationDic[name] = attributeLocation
-    }
+
     
     func addUniform(name: String) {
         if name.isEmpty { return }
@@ -103,6 +114,15 @@ final class Shader {
         glDeleteProgram(program)
     }
     
+    func addAttribute(name: String) {
+        if name.isEmpty {
+            return
+        }
+        
+        let attributeLocation = glGetAttribLocation(program, name)
+        attributeLocationDic[name] = attributeLocation
+    }
+
     func setUniform1i(name: String, value: GLint) {
         let uniformLocation = glGetUniformLocation(program, name)
         if uniformLocation != -1 {

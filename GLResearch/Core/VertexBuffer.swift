@@ -11,6 +11,7 @@ import OpenGLES
 import GLKit
 
 final class VertexBuffer {
+    
     private var vertexData = [GLfloat]()
     private var indiceData = [GLubyte]()
     

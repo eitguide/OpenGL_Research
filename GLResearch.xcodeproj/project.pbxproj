@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0ECE3823A9DB8A00AC6522 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0ECE3723A9DB8A00AC6522 /* Texture.swift */; };
 		8A15C77523A73F4F00211F64 /* GLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A15C77423A73F4F00211F64 /* GLView.swift */; };
 		8A15C77723A7407700211F64 /* CubeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A15C77623A7407700211F64 /* CubeViewController.swift */; };
 		8A220D32239E012D008353E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D31239E012D008353E8 /* AppDelegate.swift */; };
-		8A220D36239E012D008353E8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D35239E012D008353E8 /* ViewController.swift */; };
 		8A220D39239E012D008353E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D37239E012D008353E8 /* Main.storyboard */; };
 		8A220D3B239E012E008353E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D3A239E012E008353E8 /* Assets.xcassets */; };
 		8A220D3E239E012E008353E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D3C239E012E008353E8 /* LaunchScreen.storyboard */; };
@@ -21,21 +21,37 @@
 		8A220D50239E43D3008353E8 /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D4F239E43D2008353E8 /* texture.jpg */; };
 		8A220D52239E461F008353E8 /* code.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D51239E461E008353E8 /* code.png */; };
 		8A220D55239F8ECA008353E8 /* FrameBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D54239F8ECA008353E8 /* FrameBuffer.swift */; };
-		8A220D57239F9116008353E8 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D56239F9116008353E8 /* Texture.swift */; };
 		8A220D5C239FA0A3008353E8 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D5B239FA0A3008353E8 /* Renderer.swift */; };
 		8A220D5E23A0B76E008353E8 /* VertexBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */; };
 		8A220D6223A0EF0F008353E8 /* wall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A220D6123A0EF0F008353E8 /* wall.jpg */; };
+		8A493A8D23A9386C00F2DCED /* colorVertexShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A8C23A9386C00F2DCED /* colorVertexShader.vsh */; };
+		8A493A8F23A9387E00F2DCED /* colorFragmentShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A8E23A9387E00F2DCED /* colorFragmentShader.fsh */; };
+		8A493A9123A93F7100F2DCED /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493A9023A93F7100F2DCED /* DemoViewController.swift */; };
+		8A493A9323A9456400F2DCED /* RectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493A9223A9456400F2DCED /* RectViewController.swift */; };
+		8A493A9523A9465100F2DCED /* TextureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493A9423A9465100F2DCED /* TextureViewController.swift */; };
+		8A493A9723A9A7B900F2DCED /* textureVertexShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A9623A9A7B900F2DCED /* textureVertexShader.vsh */; };
+		8A493A9923A9A7CC00F2DCED /* textureFragmentShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A9823A9A7CC00F2DCED /* textureFragmentShader.fsh */; };
+		8A493A9B23A9CB0500F2DCED /* cubeVertexShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A9A23A9CB0500F2DCED /* cubeVertexShader.vsh */; };
+		8A493A9D23A9CB2100F2DCED /* cubeFragmentShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493A9C23A9CB2100F2DCED /* cubeFragmentShader.fsh */; };
+		8A493A9F23A9CC1B00F2DCED /* OfflineRenderingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493A9E23A9CC1B00F2DCED /* OfflineRenderingViewController.swift */; };
+		8A493AA123A9CCC100F2DCED /* RenderToTextureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493AA023A9CCC100F2DCED /* RenderToTextureViewController.swift */; };
+		8A493AA323A9CF0000F2DCED /* grayScaleFragmentShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 8A493AA223A9CF0000F2DCED /* grayScaleFragmentShader.vsh */; };
+		8A493AA523A9D5EA00F2DCED /* GLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493AA423A9D5EA00F2DCED /* GLViewController.swift */; };
+		8A493AA723A9D8F500F2DCED /* TriangleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A493AA623A9D8F500F2DCED /* TriangleViewController.swift */; };
 		8A7B355323A242D10057F1BE /* fl.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B355223A242D10057F1BE /* fl.jpg */; };
 		8A7B355523A248E00057F1BE /* tree.png in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B355423A248E00057F1BE /* tree.png */; };
 		8A7B37AB23A34CC40057F1BE /* GLKMatrix+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B37AA23A34CC40057F1BE /* GLKMatrix+Array.swift */; };
+		DCEEBF46FA1EA7BDF0E424DC /* Pods_GLResearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B50DFA824B566EAF5F4452E0 /* Pods_GLResearch.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		160801888F91BEA0C58C4F27 /* Pods-GLResearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLResearch.debug.xcconfig"; path = "Target Support Files/Pods-GLResearch/Pods-GLResearch.debug.xcconfig"; sourceTree = "<group>"; };
+		5D1477D9BB041CF3724D1AD5 /* Pods-GLResearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLResearch.release.xcconfig"; path = "Target Support Files/Pods-GLResearch/Pods-GLResearch.release.xcconfig"; sourceTree = "<group>"; };
+		8A0ECE3723A9DB8A00AC6522 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
 		8A15C77423A73F4F00211F64 /* GLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLView.swift; sourceTree = "<group>"; };
 		8A15C77623A7407700211F64 /* CubeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeViewController.swift; sourceTree = "<group>"; };
 		8A220D2E239E012D008353E8 /* GLResearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLResearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A220D31239E012D008353E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8A220D35239E012D008353E8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8A220D38239E012D008353E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8A220D3A239E012E008353E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A220D3D239E012E008353E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,13 +63,27 @@
 		8A220D4F239E43D2008353E8 /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
 		8A220D51239E461E008353E8 /* code.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = code.png; sourceTree = "<group>"; };
 		8A220D54239F8ECA008353E8 /* FrameBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameBuffer.swift; sourceTree = "<group>"; };
-		8A220D56239F9116008353E8 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
 		8A220D5B239FA0A3008353E8 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexBuffer.swift; sourceTree = "<group>"; };
 		8A220D6123A0EF0F008353E8 /* wall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wall.jpg; sourceTree = "<group>"; };
+		8A493A8C23A9386C00F2DCED /* colorVertexShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = colorVertexShader.vsh; sourceTree = "<group>"; };
+		8A493A8E23A9387E00F2DCED /* colorFragmentShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = colorFragmentShader.fsh; sourceTree = "<group>"; };
+		8A493A9023A93F7100F2DCED /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		8A493A9223A9456400F2DCED /* RectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectViewController.swift; sourceTree = "<group>"; };
+		8A493A9423A9465100F2DCED /* TextureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureViewController.swift; sourceTree = "<group>"; };
+		8A493A9623A9A7B900F2DCED /* textureVertexShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textureVertexShader.vsh; sourceTree = "<group>"; };
+		8A493A9823A9A7CC00F2DCED /* textureFragmentShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = textureFragmentShader.fsh; sourceTree = "<group>"; };
+		8A493A9A23A9CB0500F2DCED /* cubeVertexShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cubeVertexShader.vsh; sourceTree = "<group>"; };
+		8A493A9C23A9CB2100F2DCED /* cubeFragmentShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = cubeFragmentShader.fsh; sourceTree = "<group>"; };
+		8A493A9E23A9CC1B00F2DCED /* OfflineRenderingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineRenderingViewController.swift; sourceTree = "<group>"; };
+		8A493AA023A9CCC100F2DCED /* RenderToTextureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderToTextureViewController.swift; sourceTree = "<group>"; };
+		8A493AA223A9CF0000F2DCED /* grayScaleFragmentShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = grayScaleFragmentShader.vsh; sourceTree = "<group>"; };
+		8A493AA423A9D5EA00F2DCED /* GLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLViewController.swift; sourceTree = "<group>"; };
+		8A493AA623A9D8F500F2DCED /* TriangleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleViewController.swift; sourceTree = "<group>"; };
 		8A7B355223A242D10057F1BE /* fl.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fl.jpg; sourceTree = "<group>"; };
 		8A7B355423A248E00057F1BE /* tree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tree.png; sourceTree = "<group>"; };
 		8A7B37AA23A34CC40057F1BE /* GLKMatrix+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLKMatrix+Array.swift"; sourceTree = "<group>"; };
+		B50DFA824B566EAF5F4452E0 /* Pods_GLResearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GLResearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,16 +91,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCEEBF46FA1EA7BDF0E424DC /* Pods_GLResearch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		749856EA83B3F3460FECA045 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				160801888F91BEA0C58C4F27 /* Pods-GLResearch.debug.xcconfig */,
+				5D1477D9BB041CF3724D1AD5 /* Pods-GLResearch.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		8A15C77323A7239F00211F64 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				8A15C77423A73F4F00211F64 /* GLView.swift */,
+				8A220D45239E019E008353E8 /* OpenGLView.swift */,
+				8A493A9023A93F7100F2DCED /* DemoViewController.swift */,
+				8A493AA423A9D5EA00F2DCED /* GLViewController.swift */,
+				8A493AA623A9D8F500F2DCED /* TriangleViewController.swift */,
+				8A493A9223A9456400F2DCED /* RectViewController.swift */,
+				8A493A9423A9465100F2DCED /* TextureViewController.swift */,
+				8A15C77623A7407700211F64 /* CubeViewController.swift */,
+				8A493A9E23A9CC1B00F2DCED /* OfflineRenderingViewController.swift */,
+				8A493AA023A9CCC100F2DCED /* RenderToTextureViewController.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -80,6 +128,8 @@
 			children = (
 				8A220D30239E012D008353E8 /* GLResearch */,
 				8A220D2F239E012D008353E8 /* Products */,
+				749856EA83B3F3460FECA045 /* Pods */,
+				B01ED74A5EEA6D2581076744 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -98,13 +148,10 @@
 				8A220D5A239F91BE008353E8 /* Core */,
 				8A220D53239E9366008353E8 /* Resources */,
 				8A220D31239E012D008353E8 /* AppDelegate.swift */,
-				8A220D35239E012D008353E8 /* ViewController.swift */,
 				8A220D37239E012D008353E8 /* Main.storyboard */,
 				8A220D3A239E012E008353E8 /* Assets.xcassets */,
 				8A220D3C239E012E008353E8 /* LaunchScreen.storyboard */,
 				8A220D3F239E012E008353E8 /* Info.plist */,
-				8A220D45239E019E008353E8 /* OpenGLView.swift */,
-				8A15C77623A7407700211F64 /* CubeViewController.swift */,
 			);
 			path = GLResearch;
 			sourceTree = "<group>";
@@ -123,6 +170,13 @@
 			children = (
 				8A220D49239E1347008353E8 /* vertextShader.vsh */,
 				8A220D4B239E13AA008353E8 /* fragmentShader.fsh */,
+				8A493A8C23A9386C00F2DCED /* colorVertexShader.vsh */,
+				8A493A8E23A9387E00F2DCED /* colorFragmentShader.fsh */,
+				8A493A9623A9A7B900F2DCED /* textureVertexShader.vsh */,
+				8A493A9823A9A7CC00F2DCED /* textureFragmentShader.fsh */,
+				8A493A9A23A9CB0500F2DCED /* cubeVertexShader.vsh */,
+				8A493A9C23A9CB2100F2DCED /* cubeFragmentShader.fsh */,
+				8A493AA223A9CF0000F2DCED /* grayScaleFragmentShader.vsh */,
 			);
 			path = ShaderSource;
 			sourceTree = "<group>";
@@ -144,10 +198,11 @@
 			children = (
 				8A7B354D23A232470057F1BE /* Matrix */,
 				8A220D54239F8ECA008353E8 /* FrameBuffer.swift */,
-				8A220D56239F9116008353E8 /* Texture.swift */,
 				8A220D47239E024B008353E8 /* Shader.swift */,
 				8A220D5B239FA0A3008353E8 /* Renderer.swift */,
 				8A220D5D23A0B76E008353E8 /* VertexBuffer.swift */,
+				8A15C77423A73F4F00211F64 /* GLView.swift */,
+				8A0ECE3723A9DB8A00AC6522 /* Texture.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -160,6 +215,14 @@
 			path = Matrix;
 			sourceTree = "<group>";
 		};
+		B01ED74A5EEA6D2581076744 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B50DFA824B566EAF5F4452E0 /* Pods_GLResearch.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -167,9 +230,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A220D42239E012E008353E8 /* Build configuration list for PBXNativeTarget "GLResearch" */;
 			buildPhases = (
+				F6216E501FBF250CD6B3F5C7 /* [CP] Check Pods Manifest.lock */,
 				8A220D2A239E012D008353E8 /* Sources */,
 				8A220D2B239E012D008353E8 /* Frameworks */,
 				8A220D2C239E012D008353E8 /* Resources */,
+				4D279CECE3C83EF277BCC520 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -220,18 +285,67 @@
 			files = (
 				8A220D3E239E012E008353E8 /* LaunchScreen.storyboard in Resources */,
 				8A7B355523A248E00057F1BE /* tree.png in Resources */,
+				8A493A9923A9A7CC00F2DCED /* textureFragmentShader.fsh in Resources */,
 				8A220D4C239E13AA008353E8 /* fragmentShader.fsh in Resources */,
 				8A220D4A239E1347008353E8 /* vertextShader.vsh in Resources */,
 				8A7B355323A242D10057F1BE /* fl.jpg in Resources */,
 				8A220D52239E461F008353E8 /* code.png in Resources */,
 				8A220D50239E43D3008353E8 /* texture.jpg in Resources */,
+				8A493AA323A9CF0000F2DCED /* grayScaleFragmentShader.vsh in Resources */,
 				8A220D3B239E012E008353E8 /* Assets.xcassets in Resources */,
+				8A493A8F23A9387E00F2DCED /* colorFragmentShader.fsh in Resources */,
 				8A220D39239E012D008353E8 /* Main.storyboard in Resources */,
 				8A220D6223A0EF0F008353E8 /* wall.jpg in Resources */,
+				8A493A9723A9A7B900F2DCED /* textureVertexShader.vsh in Resources */,
+				8A493A9B23A9CB0500F2DCED /* cubeVertexShader.vsh in Resources */,
+				8A493A8D23A9386C00F2DCED /* colorVertexShader.vsh in Resources */,
+				8A493A9D23A9CB2100F2DCED /* cubeFragmentShader.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4D279CECE3C83EF277BCC520 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GLResearch/Pods-GLResearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GLResearch/Pods-GLResearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GLResearch/Pods-GLResearch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F6216E501FBF250CD6B3F5C7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GLResearch-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8A220D2A239E012D008353E8 /* Sources */ = {
@@ -240,12 +354,18 @@
 			files = (
 				8A220D5C239FA0A3008353E8 /* Renderer.swift in Sources */,
 				8A220D5E23A0B76E008353E8 /* VertexBuffer.swift in Sources */,
-				8A220D36239E012D008353E8 /* ViewController.swift in Sources */,
+				8A493A9F23A9CC1B00F2DCED /* OfflineRenderingViewController.swift in Sources */,
+				8A493AA523A9D5EA00F2DCED /* GLViewController.swift in Sources */,
 				8A220D55239F8ECA008353E8 /* FrameBuffer.swift in Sources */,
-				8A220D57239F9116008353E8 /* Texture.swift in Sources */,
+				8A493A9523A9465100F2DCED /* TextureViewController.swift in Sources */,
 				8A15C77723A7407700211F64 /* CubeViewController.swift in Sources */,
+				8A493A9323A9456400F2DCED /* RectViewController.swift in Sources */,
+				8A493AA123A9CCC100F2DCED /* RenderToTextureViewController.swift in Sources */,
+				8A493A9123A93F7100F2DCED /* DemoViewController.swift in Sources */,
 				8A7B37AB23A34CC40057F1BE /* GLKMatrix+Array.swift in Sources */,
 				8A220D46239E019E008353E8 /* OpenGLView.swift in Sources */,
+				8A493AA723A9D8F500F2DCED /* TriangleViewController.swift in Sources */,
+				8A0ECE3823A9DB8A00AC6522 /* Texture.swift in Sources */,
 				8A220D48239E024B008353E8 /* Shader.swift in Sources */,
 				8A220D32239E012D008353E8 /* AppDelegate.swift in Sources */,
 				8A15C77523A73F4F00211F64 /* GLView.swift in Sources */,
@@ -390,6 +510,7 @@
 		};
 		8A220D43239E012E008353E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 160801888F91BEA0C58C4F27 /* Pods-GLResearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -409,6 +530,7 @@
 		};
 		8A220D44239E012E008353E8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D1477D9BB041CF3724D1AD5 /* Pods-GLResearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

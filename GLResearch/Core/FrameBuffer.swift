@@ -14,6 +14,7 @@ final class FrameBuffer {
     
     private var frameBuffer: GLuint = 0
     private var colorRendererBuffer: GLuint = 0
+    private var depthRendererBuffer: GLuint = 0
     private var textureRendererBuffer: GLuint = 0
     
     private let width: CGFloat
@@ -36,7 +37,13 @@ final class FrameBuffer {
         glBindRenderbuffer(GLenum(GL_RENDERBUFFER), colorRendererBuffer)
         glRenderbufferStorage(GLenum(GL_RENDERBUFFER), GLenum(GL_RGBA8), GLsizei(self.width), GLsizei(self.height))
         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_RENDERBUFFER), colorRendererBuffer)
-       
+    }
+    
+    func attachDepthRenderer() {
+        glGenRenderbuffers(1, &depthRendererBuffer)
+        glBindRenderbuffer(GLenum(GL_RENDERBUFFER), depthRendererBuffer)
+        glRenderbufferStorageMultisampleAPPLE(GLenum(GL_RENDERBUFFER), 4, GLenum(GL_DEPTH_COMPONENT16), GLsizei(self.width), GLsizei(self.height))
+        glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_DEPTH_ATTACHMENT), GLenum(GL_RENDERBUFFER), depthRendererBuffer)
     }
     
     func attachTextureRenderer() {
@@ -63,9 +70,14 @@ final class FrameBuffer {
         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_RENDERBUFFER), 0)
     }
     
+    func detachDepthRenderer() {
+         glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_DEPTH_ATTACHMENT), GLenum(GL_RENDERBUFFER), 0)
+    }
+    
     func detachTextureRenderer() {
         glFramebufferTexture2D(GLenum(GL_TEXTURE_2D), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_TEXTURE_2D), 0, 0)
     }
+    
     
     func unbind() {
         glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
@@ -81,10 +93,11 @@ final class FrameBuffer {
         let frameBufferStatus = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
         
         if frameBufferStatus == GLenum(GL_FRAMEBUFFER_COMPLETE) {
-            print("Init Frame buffer success")
+            print("Init Frame buffer \(frameBuffer) success")
         } else {
             print("Init FrameBuffer failed")
             glBindFramebuffer(GLenum(GL_FRAMEBUFFER), 0)
+            glDeleteFramebuffers(1, &frameBuffer)
         }
     }
     
@@ -93,7 +106,5 @@ final class FrameBuffer {
         glDeleteTextures(1, &textureRendererBuffer)
         glDeleteFramebuffers(1, &frameBuffer)
     }
-
-    
     
 }

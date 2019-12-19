@@ -15,7 +15,15 @@ protocol IRenderer {
     func draw()
 }
 
+typealias ClearColor = (r: GLfloat, g: GLfloat, b: GLfloat, a: GLfloat)
+
 final class Renderer: IRenderer {
+    
+    var clearColor: ClearColor! {
+        didSet {
+            glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a)
+        }
+    }
     
     let shader: Shader
     let vertexBuffer: VertexBuffer
@@ -23,7 +31,7 @@ final class Renderer: IRenderer {
     init(shader: Shader, vertexBuffer: VertexBuffer) {
         self.shader = shader
         self.vertexBuffer = vertexBuffer
-        glClearColor(1.0, 0.0, 1.0, 1.0)
+       
     }
     
     func prepare() {
